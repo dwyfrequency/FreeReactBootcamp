@@ -8,34 +8,37 @@
   <title>Document</title>
   <script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+
 </head>
 
 <body>
   <div id="root"></div>
-  <script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <!-- Your custom script here -->
+  <script type="text/babel">
     const name = 'Tyler'
     const handle = '@tylermcginnis'
 
     // component is an func or class that optionally accepts inputs and returns a react element
-    function NameComponent(props) {
+    function NameComponent({ name }) {
       // dom element, attribute, ...[children]
-      return React.createElement('h1', null, props.name)
+      return (<h1>{name}</h1>);
     }
 
-    function HandleComponent(props) {
-      return React.createElement('h3', null, props.handle)
+    function HandleComponent({ handle }) {
+      return (<h3>{handle}</h3>);
     }
 
-    const wrapperElement = React.createElement(
-      'div',
-      { id: 'container' },
-      // we pass the component to React.createElement - to give the props pass in an object
-      React.createElement(NameComponent,
-        { name }),
-      React.createElement(HandleComponent,
-        { handle }));
+    function WrapperComponent(props) {
+      return (
+        <div id={props.id}>
+          <NameComponent name={name} />
+          <HandleComponent handle={handle} />
+        </div>
+      );
+    }
 
-    ReactDOM.render(wrapperElement, document.querySelector('#root'));
+    ReactDOM.render(<WrapperComponent id="container" />, document.querySelector('#root'));
   </script>
 </body>
 
