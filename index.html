@@ -15,31 +15,27 @@
   <div id="root"></div>
   <!-- Your custom script here -->
   <script type="text/babel">
-    //completed day one - see codepens for hw 
-    // see progress pre-jsx: https://gist.github.com/tylermcginnis/f4481cfdba19b03a1198c61aac9c1b9c
-    const name = 'Tyler'
-    const handle = '@tylermcginnis'
-
     // component is an func or class that optionally accepts inputs and returns a react element
-    function NameComponent({ name }) {
-      // dom element, attribute, ...[children]
-      return (<h1>{name}</h1>);
-    }
 
-    function HandleComponent({ handle }) {
-      return (<h3>{handle}</h3>);
-    }
-
-    function WrapperComponent(props) {
+    function FriendList(props) {
       return (
-        <div id={props.id}>
-          <NameComponent name={name} />
-          <HandleComponent handle={handle} />
+        <ul>
+          {props.list.map((name, idx) => <li key={idx}>{name}</li>)}
+        </ul>
+      )
+    }
+    function App() {
+      const friends = ['adam', 'chris', 'han', 'mikenzi'];  
+      return (
+        <div>
+          <FriendList list={friends} />
         </div>
       );
     }
 
-    ReactDOM.render(<WrapperComponent id="container" />, document.querySelector('#root'));
+
+
+    ReactDOM.render(<App />, document.querySelector('#root'));
   </script>
 </body>
 
