@@ -20,7 +20,13 @@
     function FriendList(props) {
       return (
         <ul>
-          {props.list.map((name, idx) => <li key={idx} onClick={props.handleRemoveFriend}>{name}</li>)}
+          {props.list.map((name, idx) => (
+            <li key={name}>
+              <span>{name}</span>
+              <button onClick={() => props.handleRemoveFriend(name)}>Remove</button>
+            </li>
+            
+            ))}
         </ul>
       )
     }
@@ -31,15 +37,15 @@
         this.state = {
           friends : ['adam', 'chris', 'han', 'mikenzi']
         }
-        this.handleRemoveFriend.bind(this);
+        this.handleRemoveFriend = this.handleRemoveFriend.bind(this);
       }
       handleAddFriend() {
 
       }
-      handleRemoveFriend(e) {
+      handleRemoveFriend(name) {
         this.setState(prevState => {
           return {
-            friends: prevState.friends.filter(i => i !== e.target.textContent)
+            friends: prevState.friends.filter(i => i !== name)
           }
         });
       }
