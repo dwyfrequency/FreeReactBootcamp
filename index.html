@@ -16,7 +16,7 @@
   <!-- Your custom script here -->
   <script type="text/babel">
     // component is an func or class that optionally accepts inputs and returns a react element
-
+    // STOP TIME - 1:06:25
     function FriendList(props) {
       return (
         <ul>
@@ -54,6 +54,8 @@
         const {friends} = this.state;
       return (
         <div>
+          <input type="text" placeholder="new friend" />
+          <button>Submit</button>
           <FriendList list={friends} handleRemoveFriend={this.handleRemoveFriend} />
         </div>
       );
