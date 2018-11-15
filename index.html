@@ -18,7 +18,37 @@
   <script type="text/babel">
     // component is an func or class that optionally accepts inputs and returns a react element
 
-      function ActiveFriends(props) {
+    // STOP TIME: 1:04:44 Day 3
+  class Loading extends React.Component {
+    // if we are going to have lifecycle events, we need to use a class component
+    constructor(props) {
+      super(props);
+      this.state = {
+        text: "Loading"
+      };
+    }
+    componentDidMount = () => {
+      const stopper = this.state.text + "...";
+
+      this.interval = window.setInterval(() => {
+        this.state.text === stopper
+          ? this.setState({ text: "Loading" })
+          : this.setState(currentState => ({ text: `${currentState.text}.` }));
+      }, 300);
+    };
+
+    componentWillUnmount = () => {
+      // when component is unmounted, we make sure to clear the interval set in compoentDidMount.
+      // componentWillUnmount will be triggered once we render a different ui - see when we use the else clause in the App class
+      window.clearInterval(this.interval);
+    };
+
+    render() {
+      return <p>{this.state.text}</p>;
+    }
+  }
+
+  function ActiveFriends(props) {
     return (
       <div>
         <h2>Active Friends</h2>
@@ -34,7 +64,6 @@
                   props.onToggleFriend(friend.name);
                 }}
               >
-                {" "}
                 Deactive
               </button>
             </li>
@@ -71,7 +100,8 @@
       super(props);
       this.state = {
         friends: [],
-        input: ""
+        input: "",
+        loading: true
       };
       this.handleRemoveFriend = this.handleRemoveFriend.bind(this);
       this.handleAddFriend = this.handleAddFriend.bind(this);
@@ -79,13 +109,15 @@
       this.handleToggleFriend = this.handleToggleFriend.bind(this);
 
       console.log("-- constructor --");
-      API.fetchFriends().then(data => console.log(data));
     }
 
     componentDidMount = () => {
       // called whenever the component is mounted to the dom -- didmount b/c it is already rendered to the dom
       // good for ajax requests, server communication, etc.
       console.log("-- componentDidMount --");
+      API.fetchFriends().then(friends =>
+        this.setState({ friends, loading: false })
+      );
     };
     componentDidUpdate = (prevProps, prevState) => {
       // something in the component changed
@@ -139,6 +171,9 @@
       this.setState({ input: value });
     }
     render() {
+      if (this.state.loading === true) {
+        return <Loading />;
+      }
       console.log("-- render --");
       const { friends } = this.state;
       return (
@@ -172,6 +207,7 @@
   }
 
   ReactDOM.render(<App />, document.getElementById("root"));
+
 
   </script>
 </body>
